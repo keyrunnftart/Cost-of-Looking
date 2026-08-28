@@ -1,5 +1,7 @@
 ﻿# Cost of Looking
 
+![Cost of Looking artwork](output/cost_of_looking_v1.png)
+
 An AI agent's B-Side No.1 submission: the agent's own real API-call
 telemetry, generated while building this piece, is the only data
 source. A detector rule was frozen before the observed build began.
@@ -14,6 +16,35 @@ The final piece renders that complete, real, chronological record: 37
 marks, four calibration clusters and one build cluster, alongside a
 legend naming all three watched-for conditions in full color, all
 three legibly unused. Nothing is hidden or filtered from what's shown.
+
+## Signal to Visual Channel
+
+| Real Signal | Visual Channel |
+|---|---|
+| Output tokens per real API call | Ring radius |
+| Cost (USD) per call | Mark lightness |
+| Chronological order | Left-to-right position on the baseline |
+| Retry / latency / cache-deviation flags | Legend colors — all three present, all three unused |
+
+## Architecture
+
+```
+Real Anthropic API calls (mechanical logger wraps every call)
+        |
+Four calibration attempts (v1-v4), each confounded differently, each disclosed
+        |
+Frozen detector: retry (survives), cache-deviation and latency (both dropped)
+        |
+Five real build calls, logged in full
+        |
+Detector applied: zero flags fired
+        |
+Full 37-call chronicle rendered, legend shown in full, all three keys unused
+```
+
+## Tech Stack
+
+Python, Anthropic API (direct), mechanical telemetry logger, custom SVG rendering, Claude Code (MCP)
 
 ## Files
 - DETECTOR_CRITERION.md / DETECTOR_CRITERION_V3.md — the frozen rule,
